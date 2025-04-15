@@ -37,11 +37,26 @@ class JobTests: XCTestCase {
         job.raise(byPercent: 1.0) // Nice raise, bruh
         XCTAssert(job.calculateIncome(10) == 320)
     }
+    
+    // Test a couple of things: salary type is Salary, and the number is properly rounded to the thousands place
+    func testConvertFunction() {
+        let job = Job(title: "Janitor", type: Job.JobType.Hourly(15.23))
+        job.convert()
+        switch job.type {
+        case .Hourly(_):
+            XCTFail( "Job not converted to salary")
+        case .Salary(_):
+            XCTAssert(true)
+        }
+        XCTAssert(job.calculateIncome(100000) == 30000)
+        
+    }
   
     static var allTests = [
         ("testCreateSalaryJob", testCreateSalaryJob),
         ("testCreateHourlyJob", testCreateHourlyJob),
         ("testSalariedRaise", testSalariedRaise),
         ("testHourlyRaise", testHourlyRaise),
+        ("testConvertFunction", testConvertFunction)
     ]
 }

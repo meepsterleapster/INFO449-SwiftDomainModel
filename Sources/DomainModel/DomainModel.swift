@@ -21,8 +21,6 @@ public struct Money {
             self.currency = currency;
         }
     
-    
-    
     func convert (_ toCur : String) -> Money {
         var newCur : String
         var newAmt : Double
@@ -142,6 +140,19 @@ public class Job {
         }
     }
     
+    func convert(){
+        switch type {
+        case .Salary:
+            break
+        case .Hourly(let hourly):
+            let yearlySalary = (hourly * 2000).rounded()
+            let roundedSalary = (yearlySalary / 1000 ).rounded() * 1000
+            print(yearlySalary)
+            print (roundedSalary)
+            self.type = .Salary(UInt(roundedSalary))
+        }
+    }
+
     
 }
 
@@ -149,8 +160,8 @@ public class Job {
 // Person
 //
 public class Person {
-    var firstName : String
-    var lastName : String
+    var firstName : String = ""
+    var lastName : String = ""
     var age : Int
     private var _job: Job?
     var job: Job? {
@@ -179,6 +190,18 @@ public class Person {
         self.firstName = firstName
         self.lastName = lastName
         self.age = age
+    }
+    
+    init(firstName : String, age : Int){
+        self.firstName = firstName
+        self.age = age
+   
+    }
+    
+    init(lastName : String, age : Int){
+        self.lastName = lastName
+        self.age = age
+   
     }
     
     init(firstName : String, lastName : String, age: Int, job: Job?, spouse: Person?) {
@@ -216,6 +239,8 @@ public class Person {
 
         return "[Person: firstName:\(firstName) lastName:\(lastName) age:\(age) job:\(jobString) spouse:\(spouseString)]"
     }
+    
+    
     
 
     
