@@ -152,8 +152,28 @@ public class Person {
     var firstName : String
     var lastName : String
     var age : Int
-    var job : Job?
-    var spouse : Person?
+    private var _job: Job?
+    var job: Job? {
+        get { return _job }
+        set {
+            if age >= 16 {
+                _job = newValue
+            } else {
+                _job = nil
+            }
+        }
+    }
+    private var _spouse : Person?
+    var spouse : Person? {
+        get {return _spouse}
+        set{
+            if age >= 21{
+                _spouse = newValue
+            } else {
+                _spouse = nil
+            }
+        }
+    }
     
     init(firstName : String, lastName : String, age : Int) {
         self.firstName = firstName
@@ -165,28 +185,40 @@ public class Person {
         self.firstName = firstName
         self.lastName = lastName
         self.age = age
-        self.job = job
-        self.spouse = spouse
+        if age >= 16 {
+            self.job = job
+        }
+        else{
+            self.job = nil
+        }
+        if age >= 16 {
+            self.spouse = spouse
+        }
+        else {
+            self.spouse = nil
+        }
     }
     
     func toString() -> String {
-        var returnString = "[Person: \(firstName) \(lastName), age: \(age)"
-
+        let jobString: String
         if let job = job {
             switch job.type {
             case .Hourly(let rate):
-                returnString += ", job: Hourly(\(rate))"
+                jobString = "Hourly(\(rate))"
             case .Salary(let salary):
-                returnString += ", job: Salary(\(salary))"
+                jobString = "Salary(\(salary))"
             }
+        } else {
+            jobString = "nil"
         }
 
-        if let spouse = spouse {
-            returnString += ", spouse: \(spouse.firstName)"
-        }
+        let spouseString = spouse?.firstName ?? "nil"
 
-        return returnString + "]"
+        return "[Person: firstName:\(firstName) lastName:\(lastName) age:\(age) job:\(jobString) spouse:\(spouseString)]"
     }
+    
+
+    
 
 }
 
